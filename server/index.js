@@ -1,6 +1,7 @@
 const express = require("express");
 const config = require("./config");
 const mongoose = require("mongoose");
+var User = require('./models/user.js');
 const app = express();
 
 mongoose.connect(config.uri);
@@ -10,7 +11,11 @@ db.on("error", function(err) {
   console.log('mongoose connection failed!', err);
 });
 db.once("open", function() {
-  console.log("mongoose success!URI: "+config.uri);
+  var user = new User({
+   username: '666',
+   password: '666'
+ });
+  user.save();
 })
 
 app.get("/api", function(req, res) {
