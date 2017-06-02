@@ -1,7 +1,11 @@
 const express = require("express");
 const config = require("./config");
 const mongoose = require("mongoose");
-var User = require('./models/user.js');
+const User = require('./models/user.js');
+const bodyParser = require('body-parser');
+const routes = require('./routes');
+const morgan = require('morgan');
+
 const app = express();
 
 mongoose.connect(config.uri);
@@ -11,16 +15,20 @@ db.on("error", function(err) {
   console.log('mongoose connection failed!', err);
 });
 db.once("open", function() {
-  var user = new User({
+   const user = new User({
    username: '666',
    password: '666'
  });
   user.save();
 })
 
-app.get("/api", function(req, res) {
-  res.send("viva la vida !")
-})
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.use(morgan('dev'));
+
+
+routes(app);
 
 app.listen(config.port ,function() {
   console.log("express running on port: " + config.port);

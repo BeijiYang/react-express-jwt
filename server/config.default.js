@@ -1,4 +1,5 @@
 module.exports = {
-  "port": XXXX,
-  "uri": XXXX,
+  "port": "XXXX",
+  "uri": "XXXX",
+  "secret": "XXXX",
 }

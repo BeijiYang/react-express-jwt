@@ -13,7 +13,7 @@ const UserSchema = new Schema(
 );
 
 UserSchema.pre("save", function(next) {
-  var user = this, SALT_FACTOR = 5;
+  const user = this, SALT_FACTOR = 5;
   bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
     if (err) {
       return next(err);
@@ -27,5 +27,12 @@ UserSchema.pre("save", function(next) {
     });
   });
 });
+
+UserSchema.methods.comparePassword = function(password, cb) {
+  bcrypt.compare(password, this.password, function(err, isMatch) {
+    if(err) {cb(err);}
+    cb(null, isMatch);
+  })
+}
 
 module.exports = mongoose.model('User', UserSchema);
